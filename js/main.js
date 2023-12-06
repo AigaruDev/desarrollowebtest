@@ -120,3 +120,20 @@ document.getElementById('nombreApellido').addEventListener('blur', function() {
     }
   }
 
+  function enviarDatos() {
+    const formulario = document.getElementById('formulario');
+    const datos = new FormData(formulario);
+  
+    fetch('php/form.php', {
+      method: 'POST',
+      body: datos
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Manejar la respuesta si es necesario
+      console.log(data);
+    })
+    .catch(error => {
+      console.error('Error al enviar los datos:', error);
+    });
+  }

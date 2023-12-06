@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Formulario de Votacion</h1>
-    <form action="php/form.php" method="POST">
+    <form action="php/form.php" id='formulario' method="POST">
         <label>Nombre y Apellido</label>
         <br>
         <input type="text" name="nombreApellido" id="nombreApellido" required maxlength="60" />
@@ -68,7 +68,7 @@
         <input type="checkbox" id="amigo" value="amigo" />
         <label>Amigo</label>
         <br>
-        <input name="enviar" type="submit" value="Votar" onclick="ValidarFormulario" class="btn">
+        <input name="enviar" type="submit" value="Votar" onclick="enviarFormulario" class="btn">
     </form>
     <script src="js/validaRut.js"></script>
     <script src="js/main.js"></script>
