@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-12-2023 a las 15:26:28
+-- Tiempo de generación: 07-12-2023 a las 14:18:52
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -28,12 +28,20 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `candidato` (
-  `Rut` int(11) NOT NULL,
-  `Dv` varchar(1) NOT NULL,
-  `Nombre y Apelliddo` varchar(50) NOT NULL,
-  `ComunaId` int(11) NOT NULL,
-  `ComoSeEntero` varchar(50) NOT NULL
+  `Id_Candidato` int(11) NOT NULL,
+  `Nombre_Candidato` varchar(40) NOT NULL,
+  `Id_Partido` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `candidato`
+--
+
+INSERT INTO `candidato` (`Id_Candidato`, `Nombre_Candidato`, `Id_Partido`) VALUES
+(1, 'cristobal uribe', 4),
+(2, 'mauricio rosales', 3),
+(3, 'fernando pinto', 2),
+(4, 'rocio godoy', 4);
 
 -- --------------------------------------------------------
 
@@ -42,16 +50,16 @@ CREATE TABLE `candidato` (
 --
 
 CREATE TABLE `comuna` (
-  `IdComuna` int(11) NOT NULL,
-  `NombreComuna` varchar(50) NOT NULL,
-  `RegionComuna` int(11) NOT NULL
+  `Id_Comuna` int(11) NOT NULL,
+  `Nombre_Comuna` varchar(60) NOT NULL,
+  `Id_Region` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `comuna`
 --
 
-INSERT INTO `comuna` (`IdComuna`, `NombreComuna`, `RegionComuna`) VALUES
+INSERT INTO `comuna` (`Id_Comuna`, `Nombre_Comuna`, `Id_Region`) VALUES
 (1, 'Arica', 15),
 (2, 'Camarones', 15),
 (3, 'General Lagos', 15),
@@ -403,35 +411,82 @@ INSERT INTO `comuna` (`IdComuna`, `NombreComuna`, `RegionComuna`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `partido`
+--
+
+CREATE TABLE `partido` (
+  `Id_Partido` int(11) NOT NULL,
+  `Nombre_Partido` varchar(60) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `partido`
+--
+
+INSERT INTO `partido` (`Id_Partido`, `Nombre_Partido`) VALUES
+(1, 'partido republicano'),
+(2, 'partido independiente'),
+(3, 'partido socialista'),
+(4, 'partido democrata cristiano');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `persona`
+--
+
+CREATE TABLE `persona` (
+  `Rut_Persona` varchar(13) NOT NULL,
+  `Nombre_Apellido` varchar(60) NOT NULL,
+  `Correo` varchar(80) NOT NULL,
+  `Id_Comuna` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `region`
 --
 
 CREATE TABLE `region` (
-  `Numero_Region` int(3) NOT NULL,
-  `Nombre_Region` varchar(30) NOT NULL
+  `Id_Region` int(11) NOT NULL,
+  `Nombre_Region` varchar(60) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `region`
 --
 
-INSERT INTO `region` (`Numero_Region`, `Nombre_Region`) VALUES
-(11, 'Aisén del Gral. Carlos Ibáñez '),
-(2, 'Antofagasta'),
-(9, 'Araucanía'),
-(15, 'Arica y Parinacota'),
-(3, 'Atacama'),
-(8, 'Biobío'),
-(4, 'Coquimbo'),
-(6, 'Libertador Gral. Bernardo O’Hi'),
-(10, 'Los Lagos'),
-(14, 'Los Ríos'),
-(12, 'Magallanes y de la Antártica C'),
-(7, 'Maule'),
-(13, 'Metropolitana de Santiago'),
-(16, 'Ñuble'),
+INSERT INTO `region` (`Id_Region`, `Nombre_Region`) VALUES
 (1, 'Tarapacá'),
-(5, 'Valparaíso');
+(2, 'Antofagasta'),
+(3, 'Atacama'),
+(4, 'Coquimbo'),
+(5, 'Valparaíso'),
+(6, 'Libertador Gral. Bernardo O’Higgins'),
+(7, 'Maule'),
+(8, 'Biobío'),
+(9, 'Araucanía'),
+(10, 'Los Lagos'),
+(11, 'Aisén del Gral. Carlos Ibáñez del Campo'),
+(12, 'Magallanes y de la Antártica Chilena'),
+(13, 'Metropolitana de Santiago'),
+(14, 'Los Ríos'),
+(15, 'Arica y Parinacota'),
+(16, 'Ñuble');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `voto`
+--
+
+CREATE TABLE `voto` (
+  `Id_Voto` int(11) NOT NULL,
+  `Rut` varchar(13) NOT NULL,
+  `Id_Candidato` int(11) NOT NULL,
+  `Medio_Popular` varchar(60) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Índices para tablas volcadas
@@ -441,22 +496,42 @@ INSERT INTO `region` (`Numero_Region`, `Nombre_Region`) VALUES
 -- Indices de la tabla `candidato`
 --
 ALTER TABLE `candidato`
-  ADD PRIMARY KEY (`Rut`),
-  ADD KEY `ComunaCandidato` (`ComunaId`);
+  ADD PRIMARY KEY (`Id_Candidato`),
+  ADD KEY `CandidatoPartido` (`Id_Partido`);
 
 --
 -- Indices de la tabla `comuna`
 --
 ALTER TABLE `comuna`
-  ADD PRIMARY KEY (`IdComuna`),
-  ADD KEY `RegionComuna` (`RegionComuna`);
+  ADD PRIMARY KEY (`Id_Comuna`),
+  ADD KEY `ComunaRegion` (`Id_Region`);
+
+--
+-- Indices de la tabla `partido`
+--
+ALTER TABLE `partido`
+  ADD PRIMARY KEY (`Id_Partido`);
+
+--
+-- Indices de la tabla `persona`
+--
+ALTER TABLE `persona`
+  ADD PRIMARY KEY (`Rut_Persona`),
+  ADD KEY `PersonaComuna` (`Id_Comuna`);
 
 --
 -- Indices de la tabla `region`
 --
 ALTER TABLE `region`
-  ADD PRIMARY KEY (`Numero_Region`),
-  ADD UNIQUE KEY `Nombre_Region` (`Nombre_Region`);
+  ADD PRIMARY KEY (`Id_Region`);
+
+--
+-- Indices de la tabla `voto`
+--
+ALTER TABLE `voto`
+  ADD PRIMARY KEY (`Id_Voto`),
+  ADD UNIQUE KEY `Rut` (`Rut`),
+  ADD KEY `VotoCandidato` (`Id_Candidato`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -466,13 +541,13 @@ ALTER TABLE `region`
 -- AUTO_INCREMENT de la tabla `comuna`
 --
 ALTER TABLE `comuna`
-  MODIFY `IdComuna` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=348;
+  MODIFY `Id_Comuna` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=348;
 
 --
--- AUTO_INCREMENT de la tabla `region`
+-- AUTO_INCREMENT de la tabla `voto`
 --
-ALTER TABLE `region`
-  MODIFY `Numero_Region` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+ALTER TABLE `voto`
+  MODIFY `Id_Voto` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
@@ -482,13 +557,26 @@ ALTER TABLE `region`
 -- Filtros para la tabla `candidato`
 --
 ALTER TABLE `candidato`
-  ADD CONSTRAINT `ComunaCandidato` FOREIGN KEY (`ComunaId`) REFERENCES `comuna` (`IdComuna`);
+  ADD CONSTRAINT `CandidatoPartido` FOREIGN KEY (`Id_Partido`) REFERENCES `partido` (`Id_Partido`);
 
 --
 -- Filtros para la tabla `comuna`
 --
 ALTER TABLE `comuna`
-  ADD CONSTRAINT `RegionComuna` FOREIGN KEY (`RegionComuna`) REFERENCES `region` (`Numero_Region`);
+  ADD CONSTRAINT `ComunaRegion` FOREIGN KEY (`Id_Region`) REFERENCES `region` (`Id_Region`);
+
+--
+-- Filtros para la tabla `persona`
+--
+ALTER TABLE `persona`
+  ADD CONSTRAINT `PersonaComuna` FOREIGN KEY (`Id_Comuna`) REFERENCES `comuna` (`Id_Comuna`);
+
+--
+-- Filtros para la tabla `voto`
+--
+ALTER TABLE `voto`
+  ADD CONSTRAINT `VotoCandidato` FOREIGN KEY (`Id_Candidato`) REFERENCES `candidato` (`Id_Candidato`),
+  ADD CONSTRAINT `VotoPersona` FOREIGN KEY (`Rut`) REFERENCES `persona` (`Rut_Persona`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
