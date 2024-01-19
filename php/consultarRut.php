@@ -1,8 +1,15 @@
 <?php
     require('conexion.php');
-    $respuesta;
     $con = new Connect();
     $conexion = $con->obtenerConexion();
-    $nRut= '18430229-2'//$_POST['rut'];
-    echo('hola');
+    $nRut = $_POST['rut'];
+    $query = "SELECT * from voto WHERE Rut = '$nRut'";
+    $resultado = $conexion->query($query);
+    $con->cerrarConexion();
+    if ($resultado->num_rows > 0) {
+        $respuesta = true;
+    } else {
+        $respuesta = false;
+    }
+    echo json_encode($respuesta);
 ?>

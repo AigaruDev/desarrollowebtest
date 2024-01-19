@@ -16,7 +16,7 @@ const chkAmigo = document.getElementById('chbAmigo');
 
 // variables globales
 let rutBandera = 3;  // 1 rut bueno 2 rut invalido 3 rut incompleto 
-let rutvalidado = true; // rut ya votado = true y rut aun sin votar false
+let rutvalidado; // rut ya votado = true y rut aun sin votar false
 
 tbRut.addEventListener('blur', function() {
     let valor = tbRut.value.replaceAll('.','');
@@ -149,6 +149,10 @@ formulario.addEventListener('submit', e=>{
         bandera = true;
     }
     // inicio validacion de checkboxs
+    if(rutvalidado){
+        warnings += '* Este Rut ya ha votado <br>';
+        bandera = true;
+    }
     if(bandera){
         parrafo.innerHTML = warnings;
     }else{
@@ -213,12 +217,16 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function validarRutVoto(rut) {
-        return fetch('./php/consultarRut.php', {
+    formData = new FormData()
+    formData.append('rut', rut)
+        return fetch('../php/consultarRut.php', {
           method: "POST",
-          body: ('Rut', rut),
+          body: formData,
           mode: 'cors'
         })
         .then(response => response.json())
-        .then(data => {console.log(data)})
+        .then(data => {
+            rutvalidado = data;
+            if(data)alert('Usted Ya ha Votado!. no puede volver a Votar!')})
         .catch(err => console.log(err))
 }
