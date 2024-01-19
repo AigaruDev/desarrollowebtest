@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Formulario de Votacion</title>
+</head>
+<body>
+    <header>
+        <center><h1>Formulario de votacion</h1></center>
+    </header>
+    <section class="flexContainer">
+        <div class="divFormulario">
+                <form action id="formularioVoto">
+                    <label>Nombre y Apellido</label>
+                    <br>
+                    <input type="text" name="nombreApellido" id="tbNombreApellido" maxlength="60" />
+                    <br>
+                    <label>Alias</label>
+                    <br>
+                    <input type="text" name="alias" id="tbAlias" maxlength="20" />
+                    <br>
+                    <label>RUT</label>
+                    <br>
+                    <input type="text" name="rut" id ="tbRut" maxlength="10" placeholder="Ejemplo 123456789-0" />
+                    <br>
+                    <label>Email</label>
+                    <br>
+                    <input type="email" name="email" id ="tbEmail" maxlength="50" />
+                    <br>
+                    <label>Region</label>
+                    <br>
+                    <select name="region" id="cbRegion">
+                        <option value="">Seleccionar Region</option>
+                    </select>
+                    <br>
+                    <label>Comuna</label>
+                    <br>
+                    <select name="comuna" id="cbComuna">
+                        <option value="">Seleccionar Comuna</option>
+                    </select>
+                    <br>
+                    <label>Candidato</label>
+                    <br>
+                    <select name="candidato" id="cbCandidato">
+                        <option value="">Seleccionar Candidato</option>
+                    </select>
+                    <br>
+                    <label>Como Se enteeró de Nosotros</label>
+                    <br>
+                    <input type="checkbox" id="chbWeb" value="web" />
+                    <label>Web</label>
+                    <br>
+                    <input type="checkbox" id="chbTv" value="tv" />
+                    <label>TV</label>
+                    <br>
+                    <input type="checkbox" id="chbRrss" value="redesSociales" />
+                    <label>Redes Sociales</label>
+                    <br>
+                    <input type="checkbox" id="chbAmigo" value="amigo" />
+                    <label>Amigo</label>
+                    <br>
+                    <input name="enviar" type="submit" value="Votar" id="btnEnviar" class="btnEnviar">
+            </form>
+        </div>
+            <p class="warnings" id="warnings"></p>
+    </section>
+    <script src="./js/main.js"></script>
+</body>
+</html>
