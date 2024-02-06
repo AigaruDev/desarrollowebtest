@@ -2,7 +2,7 @@
 require('conexion.php');
 $con = new Connect();
 $conexion = $con->obtenerConexion();
-$query = "SELECT * from Region order by Id_Region asc";
+$query = "SELECT * from Region ORDER BY Id_Region ASC";
 $resultado = $conexion->query($query);
 $respuesta = '<option value=>Seleccionar Region';
 $con->cerrarConexion();

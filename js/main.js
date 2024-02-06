@@ -16,7 +16,8 @@ const chkAmigo = document.getElementById('chbAmigo');
 
 // variables globales
 let rutBandera = 3;  // 1 rut bueno 2 rut invalido 3 rut incompleto 
-let rutvalidado; // rut ya votado = true y rut aun sin votar false
+let rutValidado; // rut ya votado = true y rut aun sin votar false
+let checkEntero;
 
 tbRut.addEventListener('blur', function() {
     let valor = tbRut.value.replaceAll('.','');
@@ -25,7 +26,8 @@ tbRut.addEventListener('blur', function() {
     dv = valor.slice(-1).toUpperCase();
 
     tbRut.value = cuerpo + '-'+ dv
-    if(cuerpo.length < 7) { tbRut.setCustomValidity("RUT Incompleto"); 
+    if(cuerpo.length < 7) { 
+        //tbRut.setCustomValidity("RUT Incompleto"); 
         alert('Rut Incompleto o NO Valido'); 
         if(tbRut.value == '-'){
             tbRut.value = '';
@@ -73,7 +75,7 @@ formulario.addEventListener('submit', e=>{
     e.preventDefault();
     parrafo.innerHTML = "";
     let warnings = "";
-    let badera = false;
+    let bandera = false;
     // inicio validacion tbNombreApellido
     // Expresión regular para validar solo texto y espacios
     const regexNombreApellido = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
@@ -147,18 +149,58 @@ formulario.addEventListener('submit', e=>{
     if (checkboxes.length < 2) {
         warnings += '* debes tener al menos 2 campos de como se enteró tickeados <br>';
         bandera = true;
+    }else{
+        validarCheckBox(checkboxes);
     }
     // inicio validacion de checkboxs
-    if(rutvalidado){
-        warnings += '* Este Rut ya ha votado <br>';
+    if(rutValidado){
+        warnings = '* Este Rut ya ha votado, NO puede volver a votar';
         bandera = true;
     }
-    if(bandera){
-        parrafo.innerHTML = warnings;
+    if(bandera === false){
+        let confirmacion = window.confirm('¿Desea enviar su voto? Recuerda verificar bien la informacion.');
+        if(confirmacion){
+            generarVoto(
+                tbnombreApellido.value,
+                tbAlias.value,
+                tbRut.value,
+                tbEmail.value,
+                selectComuna.value,
+                selectCandidato.value,
+                checkEntero
+            );
+        }
     }else{
-        //registrar
+        parrafo.innerHTML = warnings;
     } 
 });
+
+// Generar Votacion
+function generarVoto(nombre, alias, rut, email, comuna, candidato, medioPopular){
+    let datosVoto = {
+        nombre : nombre,
+        alias : alias,
+        rut : rut,
+        email : email,
+        comuna : comuna,
+        candidato : candidato,
+        medioPopular : medioPopular
+
+    };
+    let datosJSON = JSON.stringify(datosVoto);
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "./php/voto.php", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            // Manejar la respuesta del servidor si es necesario
+            if(xhr.responseText === "true"){
+                alert('Su voto ha sido Registrado Exitosamente!');
+            }
+        }
+    };
+    xhr.send(datosJSON);
+}
 
 // cargar Regiones
 document.addEventListener("DOMContentLoaded", function() {
@@ -177,7 +219,7 @@ document.addEventListener("DOMContentLoaded", function() {
     xhr.send();
   });
 
- //peticion Comuna
+//peticion Comuna
 selectRegion.addEventListener('change', getComunas);
 function fectchAndSetDataComuna(url, formData, targetElement){
     return fetch(url, {
@@ -216,6 +258,24 @@ document.addEventListener("DOMContentLoaded", function() {
     xhr.send();
 });
 
+//Cambiar CheckboxletraNumero 1 web , 2 tv, 3rrss, 4 Amigos
+function validarCheckBox(){
+    checkEntero = "";
+    if(chkWeb.checked){
+        checkEntero += "1";
+    }
+    if(chkTv.checked){
+        checkEntero += "2";
+    }
+    if(chkRrss.checked){
+        checkEntero += "3";
+    }
+    if(chkAmigo.checked){
+        checkEntero += "4";
+    }
+}
+
+//validar rut voto en BD
 function validarRutVoto(rut) {
     formData = new FormData()
     formData.append('rut', rut)
@@ -226,7 +286,7 @@ function validarRutVoto(rut) {
         })
         .then(response => response.json())
         .then(data => {
-            rutvalidado = data;
+            rutValidado = data;
             if(data)alert('Usted Ya ha Votado!. no puede volver a Votar!')})
         .catch(err => console.log(err))
 }
