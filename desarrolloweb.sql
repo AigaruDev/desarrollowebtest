@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-12-2023 a las 14:18:52
+-- Tiempo de generación: 06-02-2024 a las 14:33:09
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.0.30
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -438,6 +438,7 @@ INSERT INTO `partido` (`Id_Partido`, `Nombre_Partido`) VALUES
 CREATE TABLE `persona` (
   `Rut_Persona` varchar(13) NOT NULL,
   `Nombre_Apellido` varchar(60) NOT NULL,
+  `Alias` varchar(20) NOT NULL,
   `Correo` varchar(80) NOT NULL,
   `Id_Comuna` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -485,7 +486,7 @@ CREATE TABLE `voto` (
   `Id_Voto` int(11) NOT NULL,
   `Rut` varchar(13) NOT NULL,
   `Id_Candidato` int(11) NOT NULL,
-  `Medio_Popular` varchar(60) NOT NULL
+  `Medio_Popular` varchar(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -547,7 +548,7 @@ ALTER TABLE `comuna`
 -- AUTO_INCREMENT de la tabla `voto`
 --
 ALTER TABLE `voto`
-  MODIFY `Id_Voto` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id_Voto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Restricciones para tablas volcadas
